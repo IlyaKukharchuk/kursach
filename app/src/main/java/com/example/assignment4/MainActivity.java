@@ -17,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
     private NoteDataSource dataSource;
     private RecyclerView recyclerViewNotes;
     private NoteAdapter adapter;
+    private EditText etSearch;
+    private Button btnSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewNotes = findViewById(R.id.recyclerViewNotes);
         Button btnAddNote = findViewById(R.id.btnAddNote);
         Button btnDeleteAll = findViewById(R.id.btnDeleteAll);
+        etSearch = findViewById(R.id.etSearch);
+        btnSearch = findViewById(R.id.btnSearch);
 
         btnAddNote.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,6 +45,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showDeleteAllConfirmationDialog();
+            }
+        });
+
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String query = etSearch.getText().toString().trim();
+                if (!query.isEmpty()) {
+                    List<Note> notes = dataSource.searchNotesByTitle(query);
+                    adapter.updateData(notes);
+                } else {
+                    updateRecyclerView();
+                }
             }
         });
 

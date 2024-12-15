@@ -81,4 +81,32 @@ public class NoteDataSource {
         Log.d("NoteDataSource", "Deleting all notes.");
         database.delete(NoteContract.NoteEntry.TABLE_NAME, null, null);
     }
+
+    public List<Note> searchNotesByTitle(String query) {
+        List<Note> notes = new ArrayList<>();
+        String selection = NoteContract.NoteEntry.COLUMN_TITLE + " LIKE ?";
+        String[] selectionArgs = new String[]{"%" + query + "%"};
+
+        Cursor cursor = database.query(
+                NoteContract.NoteEntry.TABLE_NAME,
+                null,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                Note note = new Note();
+                note.setId(cursor.getInt(cursor.getColumnIndex(NoteContract.NoteEntry._ID)));
+                note.setTitle(cursor.getString(cursor.getColumnIndex(NoteContract.NoteEntry.COLUMN_TITLE)));
+                note.setDescription(cursor.getString(cursor.getColumnIndex(NoteContract.NoteEntry.COLUMN_DESCRIPTION)));
+                notes.add(note);
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        return notes;
+    }
 }
