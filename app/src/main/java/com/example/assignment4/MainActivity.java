@@ -87,6 +87,16 @@ public class MainActivity extends AppCompatActivity {
         final EditText etTitle = dialogView.findViewById(R.id.etTitle);
         final EditText etDescription = dialogView.findViewById(R.id.etDescription);
 
+        // Устанавливаем данные по умолчанию
+        etDescription.setText("претендует на должность:\n" +
+                "образование:\n" +
+                "желаемая ЗП:\n" +
+                " общая оценка знаний: 0/10\n" +
+                "доп заметки: \n" +
+                "\n" +
+                "номер телефона:\n" +
+                "адрес:");
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogView)
                 .setTitle("Add New Note")
